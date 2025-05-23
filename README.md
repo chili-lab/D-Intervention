@@ -5,4 +5,52 @@ Generally, we are inspired by the fact that intervention magnitude can be contro
 
 We can directly learn a distribution in latent space for different tasks.
 
+# Requirement
+
+Our codebase is built on pyreft, please install the pyreft from pip:
+```bash
+pip install pyreft
+```
+
+# Intervention Type
+We provide a set of intervention that could be choosed:
+| Intervention Method | Description |
+|-|-|
+| [`pyvene`](https://github.com/stanfordnlp/pyvene) | The backbone of pyreft library |
+| `LoReFT` | Original Low-rank Representation Fine-Tuning intervention method |
+| `DistributionalreftIntervention` | Distributional representation fine-tuning intervention |
+| `VIBRawreftIntervention` | Variational Information Bottleneck raw representation intervention |
+| `VIBAffinereftIntervention` | Variational Information Bottleneck affine representation intervention |
+| `MiniTransformerIntervention` | Mini-transformer based intervention method |
+| `RedIntervention` | Hadamard-Product Intervention  |
+| `VIBRedIntervention` | Variational Information Bottleneck reduced intervention |
+
+# Training Scripts
+
+Generally, if you want to train a distribution-wise intervention on math tasks, run:
+```bash
+python train.py -task math \
+-data_dir dataset \
+-model yahma/llama-7b-hf \
+-seed 42 \
+-l 0 -r 8 -p f7+l7 -e 9 -lr 3e-3 \
+-type DistributionalreftIntervention \
+-gradient_accumulation_steps 2 \
+-batch_size 16 \
+-eval_batch_size 4 \
+--dropout 0.00 \
+--test_split test \
+--use_normalized_template \
+--share_weights \
+--warmup_ratio 0.1 \
+--greedy_decoding
+```
+
+You can change `DistributionalreftIntervention` to any type above.
+
+
+
+
+
+
 
